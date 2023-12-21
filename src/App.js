@@ -1,6 +1,6 @@
 import { db } from './FirebaseConnection';
-import { doc, setDoc, getDoc, getDocs, collection } from 'firebase/firestore';
-import { useState } from 'react';
+import { doc, setDoc, getDoc, getDocs, collection, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 
 import './App.css';
 
@@ -14,6 +14,56 @@ function App() {
 
   const [people, setPeople] = useState([]);
   const [pessoaEncontrada, setPessoaEncontrada] = useState(false);
+
+  // useEffect( () => {
+  //   async function loadPosts() {
+
+  //     const unsub = onSnapshot((db, "pessoas"), (snapshot) => {
+  //       let listaPessoas = [];
+
+
+  //       // snapshot.forEach((pessoa) => {
+  //       //   listaPessoas.push({
+  //       //     id: pessoa.id,
+  //       //     nome: pessoa.data().nome,
+  //       //     signo: pessoa.data().signo,
+  //       //     cargo: pessoa.data().cargo,
+  //       //     nacionalidade: pessoa.data().nacionalidade,
+  //       //     idade: pessoa.data().idade,
+  //       //   })
+  //       // })
+  //       alert("ABRIU");
+        
+  //       setPeople(listaPessoas)
+  //     })
+  //   }
+
+
+  //   loadPosts();
+  // }, [])
+
+  useEffect(() => {
+    async function loadPosts() {
+     const unsub = onSnapshot(collection(db, "pessoas"), (snapshot) => {
+      let listaPessoas = [];
+
+      snapshot.forEach((pessoa) => {
+        listaPessoas.push({
+          id: pessoa.id,
+          nome: pessoa.data().nome,
+          signo: pessoa.data().signo,
+          cargo: pessoa.data().cargo,
+          nacionalidade: pessoa.data().nacionalidade,
+          idade: pessoa.data().idade,
+        })
+      })
+
+      setPeople(listaPessoas);
+     })
+    }
+
+    loadPosts();
+  }, [])
 
   async function handleAdd() {
     //aqui está também criando o document "pessoas"
@@ -83,6 +133,42 @@ function App() {
     })
   }
 
+  async function updatePessoa() {
+    const pessoaSelecionada = doc(db, "pessoas", pessoas)
+
+    await updateDoc(pessoaSelecionada, {
+      nome: pessoas,
+      signo: signo,
+      cargo: cargo,
+      nacionalidade: nacionalidade,
+      idade: idade,
+    })
+    .then(() => {
+      console.log("DADOS ATUALIZADOS COM SUCESSO!!!");
+      setPessoas('');
+      setSigno('');
+      setCargo('');
+      setNacionalidade('');
+      setIdade('');
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  async function deleteItem(id) {
+    const deleteRef = doc(db, "pessoas", id)
+
+    
+    await deleteDoc(deleteRef)
+    .then(() => {
+      console.log("Pessoa removida do banco de dados com Sucesso!!!");
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
     <div className="App">
       <h1>Pessoas: </h1>
@@ -130,7 +216,8 @@ function App() {
      <section className="areaButton">
        <button onClick={handleAdd}>Cadastrar Pessoa</button>
        <button onClick={handleRead}>Mostrar Pessoas</button>
-       <button onClick={pesquisaPessoa}>Pesquisar Pessoa</button><br/><br/>
+       <button onClick={pesquisaPessoa}>Pesquisar Pessoa</button>
+       <button onClick={updatePessoa}>Editar Pessoa</button><br/><br/>
      </section><br/>
 
     <ul>
@@ -142,7 +229,7 @@ function App() {
           <span>Cargo: {pessoa.cargo}</span><br/>
           <span>Nacionalidade: {pessoa.nacionalidade}</span><br/>
           <span>Idade: {pessoa.idade}</span><br/>
-          <button>Excluir {pessoa.nome} do banco de dados</button><br/><br/><br/>
+          <button onClick={() => deleteItem(pessoa.id)}>Excluir {pessoa.nome} do banco de dados</button><br/><br/><br/>
         </li>
       )
     })}
