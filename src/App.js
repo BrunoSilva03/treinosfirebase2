@@ -1,5 +1,5 @@
 import { db } from './FirebaseConnection';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { useState } from 'react';
 
 import './App.css';
@@ -11,6 +11,9 @@ function App() {
   const [cargo, setCargo] = useState('');
   const [nacionalidade, setNacionalidade] = useState('');
   const [idade, setIdade] = useState('');
+
+  const [people, setPeople] = useState([]);
+  const [pessoaEncontrada, setPessoaEncontrada] = useState(false);
 
   async function handleAdd() {
     //aqui está também criando o document "pessoas"
@@ -32,6 +35,51 @@ function App() {
     })
     .catch((error) => {
       console.log(error);
+    })
+  }
+
+
+  async function handleRead() {
+    const peopleRef = collection(db, "pessoas");
+
+   await getDocs(peopleRef)
+   .then((snapshot) => {
+    let lista = [];
+
+    snapshot.forEach((item) => {
+     lista.push({
+      id: item.id,
+      nome: item.data().nome,
+      signo: item.data().signo,
+      cargo: item.data().cargo,
+      nacionalidade: item.data().nacionalidade,
+      idade: item.data().idade,
+     })
+
+     console.log("DEU CERTO, MOSTRANDO PESSOAS COM SUCESSO!!!");
+    })
+    
+    setPeople(lista);
+   })
+  }
+
+  async function pesquisaPessoa() {
+    const pessoaProcurada = doc(db, "pessoas", pessoas)
+
+    await getDoc(pessoaProcurada)
+    .then((snapshot) => {
+      setPessoas(snapshot.data().pessoas)
+      setSigno(snapshot.data().signo);
+      setCargo(snapshot.data().cargo);
+      setNacionalidade(snapshot.data().nacionalidade);
+      setIdade(snapshot.data().idade);
+      console.log("PESSOA ENCONTRADA")
+      setPessoaEncontrada(true);
+    })
+    .catch((error) => {
+      console.log("PESSOA NÃO ENCONTRADA ");
+      console.log(error);
+      setPessoaEncontrada(false);
     })
   }
 
@@ -79,9 +127,28 @@ function App() {
      <br/><br/>
 
 
-     <button onClick={handleAdd}>Cadastrar Pessoa</button>
+     <section className="areaButton">
+       <button onClick={handleAdd}>Cadastrar Pessoa</button>
+       <button onClick={handleRead}>Mostrar Pessoas</button>
+       <button onClick={pesquisaPessoa}>Pesquisar Pessoa</button><br/><br/>
+     </section><br/>
 
+    <ul>
+    {people.map((pessoa) => {
+      return(
+        <li key={pessoa.id}>
+          <span><strong>Nome: {pessoa.nome}</strong></span><br/>
+          <span>Signo: {pessoa.signo}</span><br/>
+          <span>Cargo: {pessoa.cargo}</span><br/>
+          <span>Nacionalidade: {pessoa.nacionalidade}</span><br/>
+          <span>Idade: {pessoa.idade}</span><br/>
+          <button>Excluir {pessoa.nome} do banco de dados</button><br/><br/><br/>
+        </li>
+      )
+    })}
+    </ul>
 
+    
 
     </div>
   );
