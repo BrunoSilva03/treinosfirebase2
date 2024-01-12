@@ -12,6 +12,12 @@ function Home() {
         <Link to="/treinosfirebase2/galojogadores">
         <h1>Galo Jogadores</h1>
         </Link>
+        <br/> <br/> <br/>
+
+
+        <Link to="/treinosfirebase2/inputcomfoto">
+            <h1>Input Com Foto</h1>
+        </Link>
         </>
     )
 }
