@@ -20,8 +20,21 @@ function InputComFoto() {
             file.click();
             return;
         });
+
+        file.addEventListener('change', (event) => {
+
+            let reader = new FileReader();
+
+            reader.onload = () => {
+                photo.src = reader.result;
+            }
+
+            //Aqui busca todos os arquivos selecionados se tiver mais de um(imagens selecionadas)
+            //e retorna o que estiver na posição zero...
+            reader.readAsDataURL(file.files[0]);
+        })
         
-    }, [])
+    }, []);
     // circulo.addEventListener('click', () => {
     //     file.click();
     // });
@@ -32,7 +45,7 @@ function InputComFoto() {
 
         <div className={styles.maxWidth}>
             <div className={styles.imageContainer}>
-                <img src={camera} alt="Selecione uma imagem" id="imgPhoto"/>
+                <img src={camera} alt="Selecione uma imagem" id="imgPhoto" className={styles.imgPhoto}/>
             </div>
         </div>
 

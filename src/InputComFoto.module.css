@@ -19,14 +19,25 @@ input[type="file"] {
     background-color: #eee;
     border: 5px solid #ccc;
     border-radius: 50%;
-    min-height: 100px;
+    height: 100px;
+    width: 100px;
     margin-top: 50px;
     display: flex;
-    padding: 30px;
+    padding: 10px;
     cursor: pointer;
     transition: .6s;
+    object-fit: contain;
+    
 }
 
 .imageContainer:hover {
     background-color: #959494;
+}
+
+.imgPhoto {
+   width: 100px;
+   height: 100%;
+   margin: 0;
+   background-position: center center; /* centraliza a imagem */
+   background-size: cover; /* imagem cobre toda a área da div */
 }
