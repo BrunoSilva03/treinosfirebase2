@@ -6,7 +6,7 @@ function WorkImages() {
         <form>
 
             <label htmlFor="foto">Foto do Jogador: </label>
-            <input type="file" id="foto" />
+            <input type="file" id="foto" placeholder="uai"/>
             <br/><br/>
 
             <label htmlFor="nome">Nome: </label>
