@@ -4,6 +4,11 @@ function WorkImages() {
     return(
         <div className={styles.main}>
         <form>
+
+            <label htmlFor="foto">Foto do Jogador: </label>
+            <input type="file" id="foto" />
+            <br/><br/>
+
             <label htmlFor="nome">Nome: </label>
             <input type="text" id="nome" name="nome" autoComplete="off" placeholder="digite o nome do jogador"/>
             <br/><br/>
