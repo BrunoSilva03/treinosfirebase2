@@ -1,9 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 input, select {
     border: 1px solid black;
 }
 
 input[type="file"] {
-    display: block;
+    display: none;
     
+}
 
+.imagemDeFundo {
+    background-color: rgb(171, 170, 170);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+}
+
+
+.imagemDeFundo:hover {
+    background-color: rgb(128, 127, 127);
+}
+
+.imgPhoto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }

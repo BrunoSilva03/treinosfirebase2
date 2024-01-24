@@ -1,11 +1,21 @@
+import { db } from './FirebaseConnection';
+import { doc, setDoc } from 'firebase/firestore';
+import camera from './images/camera30x30.png';
+import cam from './images/cam.png';
 import styles from './WorkImages.module.css';
+import { useEffect } from 'react';
 
 function WorkImages() {
+
+    
     return(
         <div className={styles.main}>
         <form>
 
             <label htmlFor="foto">Foto do Jogador: </label>
+            <div className={styles.imagemDeFundo}>
+                <img src={cam} className={styles.imgPhoto}/>
+            </div>
             <input type="file" id="foto" placeholder="uai"/>
             <br/><br/>
 
