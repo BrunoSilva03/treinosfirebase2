@@ -35,6 +35,19 @@ function WorkImages() {
 
     }, [])
 
+    function cancelarForm() {
+        resetaImagem();
+        setNome('');
+        setIdade('');
+    }
+
+    function resetaImagem() {
+        let photo = document.getElementById('imgPhoto');
+
+        photo.src = cam;
+        
+    }
+
 
     const submitForm = (event) => {
         handleUpload(event);
@@ -78,7 +91,14 @@ function WorkImages() {
     async function handleAdd() {
         await setDoc(doc(db, "jogadores2", jogadores2), {
             nome: nome,
+            idade: idade,
+            nacionalidade: nacionalidade
         })
+        .then(
+            setNome(''),
+            setIdade(''),
+            setNacionalidade(''),
+        )
     }
 
 
@@ -95,14 +115,20 @@ function WorkImages() {
             <br/><br/>
 
             <label htmlFor="nome">Nome: </label>
-            <input type="text" id="nome" name="nome" autoComplete="off" placeholder="digite o nome do jogador"/>
+            <input type="text" id="nome" name="nome" autoComplete="off" placeholder="digite o nome do jogador" 
+            //onChange para qualquer alteração no input ele mostra o resultado no input
+            //Se não tiver o onChange não dá para digitar nada no input.
+            value={nome} 
+            onChange={(event) => setNome(event.target.value)}/>
             <br/><br/>
 
             <label htmlFor="idade">Idade: </label>
-            <input type="number" id="idade" name="idade" autoComplete="off" placeholder="digite a idade do jogador"/>
+            <input type="number" id="idade" name="idade" autoComplete="off" placeholder="digite a idade do jogador" 
+            value={idade} 
+            onChange={(e) => setIdade(e.target.value)}/>
             <br/><br/>
 
-            <label htmlFor="nacionalidade">Nacionalidade: </label>
+            <label htmlFor="nacionalidade" value={nacionalidade} onChange={(event) => setNacionalidade(event.target.value)}>Nacionalidade: </label>
             <select>
                 <option>Selecione uma opção: </option>
                 <option>Brasil</option>
@@ -115,7 +141,7 @@ function WorkImages() {
 
             <section className={styles.areaButton}>
                 <button type="submit" className={styles.btnCadastrar}>Cadastrar</button>
-                <button type="reset" className={styles.btnCancelar}>Cancelar</button>
+                <button type="reset" className={styles.btnCancelar} onClick={cancelarForm}>Cancelar</button>
             </section>
 
         </form>
