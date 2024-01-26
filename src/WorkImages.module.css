@@ -36,7 +36,22 @@ input[type="file"] {
 }
 
 
-.btnCadastrar {
+.btnCadastrar,
+.btnCancelar {
     padding: 25px;
     border: 1px solid black;
+}
+
+.btnCadastrar {
+    grid-area: cadastrar;
+}
+
+.btnCancelar {
+    grid-area: cancelar;
+}
+
+.areaButton {
+    display: grid;
+    width: 300px;
+    grid-template-areas: 'cadastrar   .   .   cancelar'
 }

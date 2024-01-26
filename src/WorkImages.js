@@ -9,6 +9,10 @@ import { useState, useEffect } from 'react';
 function WorkImages() {
 
     const [imgURL, setImgURL] = useState([]);
+    const [jogadores2, setJogadores2] = useState('');
+    const [nome, setNome] = useState('');
+    const [idade, setIdade] = useState('');
+    const [nacionalidade, setNacionalidade] = useState('');
 
     useEffect(() => {
         var file = document.getElementById('file');
@@ -34,6 +38,7 @@ function WorkImages() {
 
     const submitForm = (event) => {
         handleUpload(event);
+        handleAdd();
     }
 
     const handleUpload = (event) => {
@@ -68,6 +73,15 @@ function WorkImages() {
     }
 
 
+
+
+    async function handleAdd() {
+        await setDoc(doc(db, "jogadores2", jogadores2), {
+            nome: nome,
+        })
+    }
+
+
     return(
         <div className={styles.main}>
         <form onSubmit={submitForm}>
@@ -99,7 +113,10 @@ function WorkImages() {
             </select>
             <br/> <br/> <br/>
 
-            <button type="submit" className={styles.btnCadastrar}>Cadastrar</button>
+            <section className={styles.areaButton}>
+                <button type="submit" className={styles.btnCadastrar}>Cadastrar</button>
+                <button type="reset" className={styles.btnCancelar}>Cancelar</button>
+            </section>
 
         </form>
         </div>
