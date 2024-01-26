@@ -34,3 +34,9 @@ input[type="file"] {
     height: 100px;
     border-radius: 50%;
 }
+
+
+.btnCadastrar {
+    padding: 25px;
+    border: 1px solid black;
+}
