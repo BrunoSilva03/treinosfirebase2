@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 function WorkImages() {
 
     const [imgURL, setImgURL] = useState([]);
-    const [jogadores2, setJogadores2] = useState('');
+    const [jogadores2, setJogadores2] = useState([]);
     const [nome, setNome] = useState('');
     const [idade, setIdade] = useState('');
     const [nacionalidade, setNacionalidade] = useState('');
@@ -95,6 +95,7 @@ function WorkImages() {
             nacionalidade: nacionalidade
         })
         .then(
+            setJogadores2(''),
             setNome(''),
             setIdade(''),
             setNacionalidade(''),
